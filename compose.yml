@@ -1,0 +1,28 @@
+services:
+  ffmpeg-api-cpu:
+    image: harbor.suanleme.cn/library/ffmpeg-api:cpu
+    restart: always
+    network_mode: bridge
+    labels:
+      - suanleme_0.http.port=8000
+      - suanleme_0.http.prefix=cpu
+    build: cpu
+    ports:
+      - "8000:8000"
+  ffmpeg-api-gpu:
+    image: harbor.suanleme.cn/library/ffmpeg-api:gpu
+    restart: always
+    network_mode: bridge
+    labels:
+      - suanleme_0.http.port=8000
+      - suanleme_0.http.prefix=gpu
+    build: gpu
+    ports:
+      - "8001:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
